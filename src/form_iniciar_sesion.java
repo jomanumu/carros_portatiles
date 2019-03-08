@@ -1,3 +1,12 @@
+
+import java.util.HashMap;
+import java.util.Map;
+import javafx.scene.Group;
+import javafx.scene.control.RadioButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -9,14 +18,28 @@
  * @author josem
  */
 public class form_iniciar_sesion extends javax.swing.JFrame {
-
+    Map<String, String> usuariosRegistrados = new HashMap();
+    Map<String, String> carrosPortatiles = new HashMap();
+    Map<String, String> usuariosAdministradores = new HashMap();
+    int carrosDisponibles = 0;
+    int carrosNoDisponibles = 0;
+    String usuario = "";
+    String password = "";
     /**
      * Creates new form form_iniciar_sesion
      */
     public form_iniciar_sesion() {
         initComponents();
     }
-
+    
+    public form_iniciar_sesion(Map userRegistrados, Map userAdministradores, Map carrosPort, int carrosD, int carrosND) {
+        initComponents();
+        usuariosRegistrados = userRegistrados;
+        usuariosAdministradores = userAdministradores;
+        carrosPortatiles = carrosPort;
+        carrosDisponibles = carrosD;
+        carrosNoDisponibles = carrosND;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -26,21 +49,122 @@ public class form_iniciar_sesion extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jLabel1 = new javax.swing.JLabel();
+        labelCabecera = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jtextfieldUsuario = new javax.swing.JTextField();
+        botonLogin = new javax.swing.JButton();
+        jtextfieldPass = new javax.swing.JPasswordField();
+
+        setTitle("FORMULARIO DE INICIO DE SESIÓN");
+        setResizable(false);
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("USUARIO");
+
+        labelCabecera.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        labelCabecera.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelCabecera.setText("INICIO DE SESIÓN");
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("CONTRASEÑA");
+
+        botonLogin.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        botonLogin.setText("LOGIN");
+        botonLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonLoginActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelCabecera, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 714, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtextfieldUsuario))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(botonLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtextfieldPass)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(labelCabecera, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtextfieldUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(52, 52, 52)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
+                    .addComponent(jtextfieldPass))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+                .addComponent(botonLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void botonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonLoginActionPerformed
+        String password = jtextfieldPass.getText();
+        String usuario = jtextfieldUsuario.getText();
+        
+        if (usuario.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "EL CAMPO 'USUARIO' NO PUEDE ESTAR VACÍO");
+            jtextfieldUsuario.requestFocus();
+        } else {
+            if (password.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "EL CAMPO 'CONTRASEÑA' NO PUEDE ESTAR VACÍO");
+                jtextfieldUsuario.requestFocus();
+            } else {
+                if (usuariosRegistrados.containsKey(usuario)) {
+                    String passUser = usuariosRegistrados.get(usuario);
+                    if (passUser.equals(password)) {
+                        // USUARIO NORMAL SESION CORRECTA ************* //
+                        form_reservar_carros formReservar = new form_reservar_carros
+                                (usuariosRegistrados, usuariosAdministradores, 
+                                carrosPortatiles, carrosDisponibles, carrosNoDisponibles, usuario, password);
+                        this.setVisible(false);
+                        formReservar.setVisible(true);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "LA CONTRASEÑA NO ES CORRECTA");
+                    }
+                } else {
+                    if (usuariosAdministradores.containsKey(usuario)) {
+                        String passUser = usuariosAdministradores.get(usuario);
+                        if (passUser.equals(password)) {
+                            // USUARIO ADMINISTRADOR SESION CORRECTA ************* //
+                            form_administrador formAdmin = new form_administrador
+                                    (usuariosRegistrados, usuariosAdministradores, 
+                                    carrosPortatiles, carrosDisponibles, carrosNoDisponibles, usuario, password);
+                            this.setVisible(false);
+                            formAdmin.setVisible(true);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "LA CONTRASEÑA NO ES CORRECTA");
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "EL USUARIO " + usuario + " NO EXISTE");
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_botonLoginActionPerformed
 
     /**
      * @param args the command line arguments
@@ -78,5 +202,11 @@ public class form_iniciar_sesion extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botonLogin;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPasswordField jtextfieldPass;
+    private javax.swing.JTextField jtextfieldUsuario;
+    private javax.swing.JLabel labelCabecera;
     // End of variables declaration//GEN-END:variables
 }
